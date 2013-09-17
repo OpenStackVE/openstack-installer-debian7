@@ -59,6 +59,7 @@ then
 		echo "user=$mysqldbadm" >> /root/.my.cnf
 		echo "password=$mysqldbpassword" >> /root/.my.cnf
 		echo "GRANT ALL PRIVILEGES ON *.* TO '$mysqldbadm'@'%' IDENTIFIED BY '$mysqldbpassword' WITH GRANT OPTION;"|mysql
+		echo "GRANT ALL PRIVILEGES ON *.* TO '$mysqldbadm'@'$dbbackendhost' IDENTIFIED BY '$mysqldbpassword' WITH GRANT OPTION;"|mysql
 		echo "FLUSH PRIVILEGES;"|mysql
 		iptables -A INPUT -p tcp -m multiport --dports $mysqldbport -j ACCEPT
 		/etc/init.d/iptables-persistent save
