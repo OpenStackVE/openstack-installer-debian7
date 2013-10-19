@@ -68,7 +68,7 @@ archivo de configuración.
 Luego de actualizar su archivo de configuración, ejecute en la raíz del
 directorio del *script* el comando siguiente:
 
-```bash
+```
 # ./main-installer.sh install
 ```
 
@@ -77,7 +77,7 @@ El instalador le preguntará si quiere proceder (y/n).
 Si ejecuta el instalador con el parámetro adicional *auto*, el mismo seguirá
 de manera automática sin preguntar. Ejemplo:
 
-```bash
+```
 # ./main-installer.sh install auto
 ```
 
