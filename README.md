@@ -241,212 +241,250 @@ active la opción de usar *dhcp*.
 > IP's.
 
 
-MODULARIZACIÓN DEL INSTALADOR
+### Modularización del Instalador
 
-Si bien el proceso de instalación principal "main-installer" se encarga de llamar a cada módulo de cada
-componente del instalador, dichos módulos son realmente independientes entre si, al punto de que pueden
-ser llamados de manera secuencial. No es el caso común, pero puede hacerse. El orden normal de ejecución
-de cada módulo es el siguiente (asumiendo que todos los componentes serán instalados):
+Si bien el proceso de instalación principal "*main-installer*" se encarga de
+llamar a cada módulo de cada componente del instalador, dichos módulos son
+realmente independientes entre si, al punto de que pueden ser llamados de
+manera secuencial. No es el caso común, pero puede hacerse. El orden normal de
+ejecución de cada módulo es el siguiente (asumiendo que todos los componentes
+serán instalados):
 
-requeriments.sh
-messagebrokerinstall.sh
-databaseinstall.sh
-requeriments-extras.sh (sólo presente en el "sabor" de debian 7)
-keystoneinstall.sh
-swiftinstall.sh
-glanceinstall.sh
-cinderinstall.sh
-quantuminstall.sh
-novainstall.sh
-ceilometerinstall.sh
-snmpinstall.sh
-horizoninstall.sh
-postinstall.sh
+* requeriments.sh
+* messagebrokerinstall.sh
+* databaseinstall.sh
+* requeriments-extras.sh (sólo presente en el "sabor" de debian 7)
+* keystoneinstall.sh
+* swiftinstall.sh
+* glanceinstall.sh
+* cinderinstall.sh
+* quantuminstall.sh
+* novainstall.sh
+* ceilometerinstall.sh
+* snmpinstall.sh
+* horizoninstall.sh
+* postinstall.sh
 
 Si desea ejecutar los módulos en orden sin usar el instalador principal, debe ejecutarlos desde el
 directorio donde se encuentra el instalador, de la siguiente manera:
 
+```
 # ./modules/Modulo-a-ejecutar.sh
+```
 
-Todos los módulos leen el archivo de configuración (./configs/main-config.rc) y tomarán las opciones de
-configuración desde dicho archivo.
+Todos los módulos leen el archivo de configuración
+(`./configs/main-config.rc`) y tomarán las opciones de configuración desde
+dicho archivo.
 
-Cada módulo que se ejecuta de manera exitosa dejará una serie de archivos de control en el directorio
-siguiente:
+Cada módulo que se ejecuta de manera exitosa dejará una serie de archivos de
+control en el directorio siguiente:
 
+```
 /etc/openstack-control-script-config
+```
 
-Dichos archivos de control son utilizados por los módulos para evitar una re-ejecución de los mismos
-que pueda causar problemas en la instalación de OpenStack, y también son utilizados por el script
-"openstack-control.sh" para saber que componentes de OpenStack fueron instalados de manera exitosa y
-que servicios están instalados para iniciar/detener/reiniciar/etc.
+Dichos archivos de control son utilizados por los módulos para evitar una
+re-ejecución de los mismos que pueda causar problemas en la instalación de
+OpenStack, y también son utilizados por el script "openstack-control.sh" para
+saber que componentes de OpenStack fueron instalados de manera exitosa y que
+servicios están instalados para iniciar/detener/reiniciar/etc.
 
 
-RECOMENDACIONES DE INSTALACIÓN PARA CENTOS Y DEBIAN.
+### RECOMENDACIONES DE INSTALACIÓN PARA CENTOS Y DEBIAN.
 
-Centos 6:
+#### Centos 6:
 
-Instale centos con la selección de paquetes para "Basic Server" (servidor básico). Asegúrese de tener
-correctamente instalado, configurado y operativo el servicio ntpd. Se recomienda también usar ntpdate.
+1. Instale centos con la selección de paquetes para "Basic Server" (servidor
+   básico). Asegúrese de tener correctamente instalado, configurado y operativo
+   el servicio ntpd. Se recomienda también usar ntpdate.
 
-Agregue los repositorios EPEL y RDO (ver "NOTAS.txt").
+2. Agregue los repositorios EPEL y RDO (ver "NOTAS.txt").
 
-Instale y configure OpenVSWitch (de nuevo, ver "NOTAS.txt").
+3. Instale y configure OpenVSWitch (de nuevo, ver "NOTAS.txt").
 
-Debian 7:
+#### Debian 7:
 
-Instale debian con la selección de paquetes "Standard System Utilities" (utilitarios de sistema estandard)
-y con SSH Server (servidor ssh). Asegúrese de tener correctamente instalado, configurado y operativo
-el servicio ntpd. Se recomienda también usar ntpdate.
+1. Instale debian con la selección de paquetes "Standard System Utilities"
+(utilitarios de sistema estandard) y con SSH Server (servidor ssh). Asegúrese
+de tener correctamente instalado, configurado y operativo el servicio ntpd. Se
+recomienda también usar ntpdate.
 
-Agregue el repositorio de OpenStack para Debian y asegúrese de tener las ramas completas para sus repos
+2. Agregue el repositorio de OpenStack para Debian y asegúrese de tener las ramas completas para sus repos
 de debian (ver "NOTAS.txt").
 
-Instale y configure OpenVSWitch (de nuevo, ver "NOTAS.txt").
+3. Instale y configure OpenVSWitch (de nuevo, ver "NOTAS.txt").
 
-Cinder:
+### Cinder:
 
 Si va a usar CINDER con lvm-iscsi, asegúrese de tener una partición o disco libre para crear un LVM
 llamado "cinder-volumes". Ejemplo (disco libre /dev/sdc):
 
+```bash
 pvcreate /dev/sdc
 vgcreate cinder-volumes /dev/sdc
+```
 
 Otro ejemplo con una partición libre /dev/sda3:
 
+```bash
 pvcreate /dev/sda3
 vgcreate cinder-volumes /dev/sda3
+```
 
-Swift:
+### Swift:
 
 Si va a usar swift, recuerde que debe tener el disco/partición de swift montado sobre un directorio
 específico y este debe ser indicado en la configuración del instalador (main-config.rc).
 
 Ejemplo:
 
-Variable swiftdevice="d1"
+Variable `swiftdevice="d1"`
 
 En el fstab "d1" debe estar montado así:
 
+```
 /dev/sdc1 /srv/node/d1 ext4 acl,user_xattr 0 0
+```
 
 En este ejemplo, se asume que existe ya una partición "/dev/sdc1" previamente formateada en ext4 o
 cualquier otro sistema de archivos soportado por Linux.
 
 También puede usar un recurso NFS. Ejemplo:
 
+```
 192.168.56.1:/exports/nfs_for_swift /srv/node/d1 nfs rw,auto,vers=3,proto=tcp,acl,user_xattr 0 0
+```
 
-Arquitectura:
+### Arquitectura:
 
-Tanto en debian como en centos, debe elegir utilizar 64 bits (amd64/x86_64). No trate de instalar
-OpenStack en 32 bits.
+Tanto en debian como en centos, debe elegir utilizar 64 bits
+(amd64/x86_64). No trate de instalar OpenStack en 32 bits.
 
-Servicio NTP:
+### Servicio NTP:
 
-Es VITAL que sus servidores de OpenStack tengan una correcta sincronización de tiempo o habrá serios
-problemas entre el controller y los nodos de compute. Lea la documentación de OpenStack para saber
-mas al respecto.
+Es VITAL que sus servidores de OpenStack tengan una correcta sincronización de
+tiempo o habrá serios problemas entre el controller y los nodos de
+compute. Lea la documentación de OpenStack para saber mas al respecto.
 
 
-RECOMENDACIONES PARA VIRTUALBOX.
+### Recomendaciones para Virtualbox.
 
-Usted puede usar este instalador en una VM de VirtualBox si no desea usar un servidor "real" para
-practicar y aprender OpenStack. Debería tener un "mínimo absoluto" de 2GB's de RAM en su equipo
-"real" y asignar al menos 900 Mb's de RAM a la VM de VirtualBox, pero si quiere hacer una prueba
-mas extensa, trate de tener una VM con al menos 4 GB's.
+Usted puede usar este instalador en una VM de VirtualBox si no desea usar un
+servidor "real" para practicar y aprender OpenStack. Debería tener un "mínimo
+absoluto" de 2GB's de RAM en su equipo "real" y asignar al menos 900 Mb's de
+RAM a la VM de VirtualBox, pero si quiere hacer una prueba mas extensa, trate
+de tener una VM con al menos 4 GB's.
 
-Recomendaciones de hardware para una VM de VirtualBox:
+### Recomendaciones de hardware para una VM de VirtualBox:
 
-Discos Duros: Uno para el sistema operativo (16 Gb's mínimo), uno para Cinder-Volumes y otro para
-swift - espacio variable... mínimo 8GB's para cada disco (switf y cinder-volumes).
-Red: tres interfaces:
- - Interfaz 1 en modo NAT para salida a Internet.
- - Interfaz 2 en modo "host only adapter, promisc: todos", para poder administrar el Servidor
-   OpenStack - sugerencia: Usar vboxnet0 con la red 192.168.56.0/24 (desactivar el dhcp de virtualbox)
-   y asignarle la IP 192.168.56.2 a la interfaz (la .1 estará en la máquina real).
- - Interfaz 3 en modo "host only adapter, promiscq:q: todos", para poder asignar a las VM's de OpenStack
-   la red en la interfaz eth2 y el rango IP 192.168.57.0/24 (la IP 192.168.57.1 estará en la máquina
-   real).
+Discos Duros: Uno para el sistema operativo (16 Gb's mínimo), uno para
+Cinder-Volumes y otro para swift - espacio variable... mínimo 8GB's para cada
+disco (switf y cinder-volumes).  Red: tres interfaces:
+ * Interfaz 1 en modo NAT para salida a Internet.
+ * Interfaz 2 en modo "host only adapter, promisc: todos", para poder
+   administrar el Servidor OpenStack - sugerencia: Usar vboxnet0 con la red
+   192.168.56.0/24 (desactivar el dhcp de virtualbox) y asignarle la IP
+   192.168.56.2 a la interfaz (la .1 estará en la máquina real).
+ * Interfaz 3 en modo "host only adapter, promiscq:q: todos", para poder
+   asignar a las VM's de OpenStack la red en la interfaz eth2 y el rango IP
+   192.168.57.0/24 (la IP 192.168.57.1 estará en la máquina real).
 
-Hacer la instalación del S/O de 64 bits de su preferencia. Agregar los repositorios y soporte ntp
-según las recomendaciones en este documento, crear el switch de OpenVSWITCH br-int, crear el switch
-de OpenVSWITCH br-eth2 y agregarle el puerto eth2 (la interfaz 3 en la VM de VirtualBox).
+Hacer la instalación del S/O de 64 bits de su preferencia. Agregar los
+repositorios y soporte ntp según las recomendaciones en este documento, crear
+el switch de OpenVSWITCH br-int, crear el switch de OpenVSWITCH br-eth2 y
+agregarle el puerto eth2 (la interfaz 3 en la VM de VirtualBox).
 
-Crear el volumen de cinder contra el segundo disco duro de la VM de virtualbox:
+Crear el volumen de cinder contra el segundo disco duro de la VM de
+virtualbox:
 
+```bash
 pvcreate /dev/sdb
 vgcreate cinder-volumes /dev/sdb
+```
 
-Si va a usar swift, crear la partición en el tercer disco (/dev/sdc1) y montarla según las notas en
-este documento.
+Si va a usar swift, crear la partición en el tercer disco (/dev/sdc1) y
+montarla según las notas en este documento.
 
+Hacer la instalación indicando que el Mapping de bridge (dentro de
+main-config.rc) es:
 
-Hacer la instalación indicando que el Mapping de bridge (dentro de main-config.rc) es:
-
+```bash
 bridge_mappings="publica:br-eth2"
+```
 
-Cambiar la IP en el main-config.rc a la IP asignada a la VM en la red 192.168.57.0/24.
+Cambiar la IP en el `main-config.rc` a la IP asignada a la VM en la red
+192.168.57.0/24.
 
 Ejecutar el instalador.
 
 Disfrutar de OpenStack :-)
 
-Usted podrá entrar al servidor vía web por la interfaz 192.168.56.x para ejecutar las tareas de
-administración de OpenStack. Creé su subred en el rango de eth2 (192.168.57.0/24) y podrá entrar a
-las VM's de OpenStack desde su máquina real que tendrá la interfaz 192.168.57.1.
+Usted podrá entrar al servidor vía web por la interfaz 192.168.56.x para
+ejecutar las tareas de administración de OpenStack. Creé su subred en el rango
+de eth2 (192.168.57.0/24) y podrá entrar a las VM's de OpenStack desde su
+máquina real que tendrá la interfaz 192.168.57.1.
 
 
-DESINSTALACIÓN
+### Desinstalación
 
 El script principal tiene también un parámetro que llama al módulo de desinstalación:
 
+```
 # ./main-installer.sh uninstall
+```
 o
+
+```
 # ./main-installer.sh uninstall auto
+```
 
-La primera forma de llama al proceso de desinstalación, preguntará "y/n" para proseguir o abortar, pero
-al ser llamado con el parámetro extra "auto", no habrá preguntas y todo lo que el instalador instaló
-será eliminado del servidor.
+La primera forma de llama al proceso de desinstalación, preguntará "y/n" para
+proseguir o abortar, pero al ser llamado con el parámetro extra "auto", no
+habrá preguntas y todo lo que el instalador instaló será eliminado del
+servidor.
 
-Es importante tener en cuenta que si se utilizó la opción dbinstall="yes", el desinstalador eliminará
-no solamente el manejador de base de datos sino también las bases de datos creadas.
+Es importante tener en cuenta que si se utilizó la opción dbinstall="yes", el
+desinstalador eliminará no solamente el manejador de base de datos sino
+también las bases de datos creadas.
 
-Si usted desea NO ELIMINAR las bases de datos creadas, modifique el "main-config.rc" y coloque la opción
-dbinstall="no". Esto hará que el desinstalador no elimine ni el manejador de base de datos ni las bases
-de datos creadas.
+Si usted desea NO ELIMINAR las bases de datos creadas, modifique el
+"main-config.rc" y coloque la opción dbinstall="no". Esto hará que el
+desinstalador no elimine ni el manejador de base de datos ni las bases de
+datos creadas.
 
-Esto es muy conveniente para una reinstalación. Si por alguna razón su instalación de OpenStack requiere
-ser reconstruida sin tocar las bases de datos o el manejador, desinstale usando dbinstall="no", y 
-cuando vaya a reinstalar, coloque todas las opciones de base de datos en "no" para conservar tanto el
-manejador como las bases de datos y data creada:
+Esto es muy conveniente para una reinstalación. Si por alguna razón su
+instalación de OpenStack requiere ser reconstruida sin tocar las bases de
+datos o el manejador, desinstale usando dbinstall="no", y cuando vaya a
+reinstalar, coloque todas las opciones de base de datos en "no" para conservar
+tanto el manejador como las bases de datos y data creada:
 
+```
 dbcreate="no"
 dbinstall="no"
 dbpopulate="no"
+```
+
+Si su instalación tiene múltiples nodos (controller / compute) use los
+archivos `main-config.rc` con los que instaló cada nodo para la desinstalación
+del nodo correspondiente.
 
 
-Si su instalación tiene múltiples nodos (controller / compute) use los archivos "main-config.rc" con
-los que instaló cada nodo para la desinstalación del nodo correspondiente.
+### Goodies
+
+En el directorio *Goodies* usted podrá encontrar algunos scripts (cada uno con
+su respectivo readme) que puede utilizar con su instalación de OpenStack. Vea
+los scripts y sus respectivos "readmes" para entender mejor como usarlos !.
 
 
-GOODIES
+### Notas Finales
 
-En el directorio "Goodies" usted podrá encontrar algunos scripts (cada uno con su respectivo readme)
-que puede utilizar con su instalación de OpenStack. Vea los scripts y sus respectivos "readmes" para
-entender mejor como usarlos !.
+Este instalador fue orientado inicialmente al modelo de red flat/vlan's con
+router externos donde el módulo de red (Quantum) no canalizará tráfico (sólo
+manejará los recursos de puertos de ovs y lbaas y levantará las
+configuraciones necesarias). En este modelo, quantum "no se convierte" en un
+posible cuello de botella para el tráfico de red. Sin embargo, usted "si tiene
+los conocimientos de configuración de openstack" puede adaptar la
+configuración y/o los módulos a sus necesidades en caso de querer utilizar el
+modelo de tunneling o cualquier otra configuración de Quantum que requiera.
 
-
-NOTAS FINALES
-
-Este instalador fue orientado inicialmente al modelo de red flat/vlan's con router externos donde el
-módulo de red (Quantum) no canalizará tráfico (sólo manejará los recursos de puertos de ovs y lbaas y
-levantará las configuraciones necesarias). En este modelo, quantum "no se convierte" en un posible
-cuello de botella para el tráfico de red. Sin embargo, usted "si tiene los conocimientos de configuración
-de openstack" puede adaptar la configuración y/o los módulos a sus necesidades en caso de querer
-utilizar el modelo de tunneling o cualquier otra configuración de Quantum que requiera.
-
-FIN.-
-
-
-
+### FIN.-
