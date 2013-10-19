@@ -1,105 +1,121 @@
-INSTALADOR DESATENDIDO (SEMI AUTOMATIZADO) PARA OPENSTACK (GRIZZLY)
+# Instalador Desatendido (Semi Automatizado) para OpenStack (ver Grizzly)
 Reynaldo R. Martinez P.
 E-Mail: TigerLinux@Gmail.com
 Caracas, Venezuela.
 
-Este instalador fue realizado para automatizar las tareas de creación de una infraestructura
-de virtualización basada en OpenStack. Hasta el momento, existen dos "sabores" del instalador,
-uno para Debian 7 y otra para Centos 6.
+## Introducción
 
-Ambos "sabores" producen esencialmente lo mismo: Un OpenStack completamente utilizable para
-producción.
+Este instalador fue realizado para automatizar las tareas de creación de una
+infraestructura de virtualización basada en OpenStack. Hasta el momento,
+existen dos "sabores" del instalador, uno para Debian 7 y otra para Centos 6.
+
+Ambos *sabores* producen esencialmente lo mismo: Un OpenStack completamente
+utilizable para producción.
 
 
-USO DEL INSTALADOR.
+## Uso del Instalador.
 
-Primero: LEA, LEA, LEA y luego de descansar de leer, LEA DE NUEVO !!.
+### Primero
 
-Lea todo lo que puede de OpenStack si desea incursionar en el área de virtualización en la nube.
-Si no le gusta leer, entonces apóyese en alguien que si tenga la disposición para hacerlo, pero
-no trate de usar este instalador sin tener algún tipo de conocimientos a la mano. Vea el archivo
-"NOTAS.txt" para entender un poco mas de cuales conocimientos usted debería tener.
+*LEA, LEA, LEA y luego de descansar de leer, LEA DE NUEVO !!.*
 
-El sub-mundo de OpenStack engloba varias tecnologías del mundo de Software Libre y del mundo de Redes
-que deben ser comprendidas muy bien antes de siquiera intentar hacer cualquier instalación de
-openstack ya sea con esta herramienta de instalación o con cualquier otra. En resumen, si usted no
-tiene los conocimientos, no lo intente. Adquiera los conocimientos primero, y luego proceda !.
+Lea todo lo que puede de *OpenStack* si desea incursionar en el área de
+virtualización en la nube.  Si no le gusta leer, entonces apóyese en alguien
+que si tenga la disposición para hacerlo, pero no trate de usar este
+instalador sin tener algún tipo de conocimientos a la mano. Vea el archivo
+`NOTAS.txt` para entender un poco mas de cuales conocimientos usted debería
+tener.
 
-Antes de usar el instalador, debe preparar su o sus servidores. De nuevo, en el archivo "NOTAS.txt"
-hay puntos importantes que deben ser cubiertos antes de iniciar una instalación usando estas
-herramientas. El instalador hará una serie de validaciones que, en caso de arrojar resultados
-negativos, hará que aborte el proceso.
+El sub-mundo de *OpenStack* engloba varias tecnologías del mundo de Software
+Libre y del mundo de Redes que deben ser comprendidas muy bien antes de
+siquiera intentar hacer cualquier instalación de openstack ya sea con esta
+herramienta de instalación o con cualquier otra. En resumen, si usted no tiene
+los conocimientos, no lo intente. Adquiera los conocimientos primero, y luego
+proceda !.
 
-Segundo: Modifique el archivo de configuración del instalador.
+Antes de usar el instalador, debe preparar su o sus servidores. De nuevo, en
+el archivo `NOTAS.txt` hay puntos importantes que deben ser cubiertos antes de
+iniciar una instalación usando estas herramientas. El instalador hará una
+serie de validaciones que, en caso de arrojar resultados negativos, hará que
+aborte el proceso.
 
-El instalador tiene un archivo central de configuración: ./configs/main-config.rc. Dicho archivo
-está bastante documentado, de manera que si usted hizo "su tarea" y estudió de OpenStack, sabrá
-que debe modificar en el mismo. Hay cosas muy obvias como "contraseñas", "direcciones IP", "módulos
-a instalar" y "dominios de dns".
+### Segundo: Modifique el archivo de configuración del instalador.
 
-En su versión por defecto, el archivo de configuración tiene las selecciones de módulos para instalar
-lo que se conoce como un "all-in-one" (un servidor monolítico de OpenStack con todos los servicios).
+El instalador tiene un archivo central de configuración:
+`./configs/main-config.rc`. Dicho archivo está bastante documentado, de manera
+que si usted hizo *su tarea* y estudió de *OpenStack*, sabrá que debe modificar
+en el mismo. Hay cosas muy obvias como *contraseñas*, *direcciones IP*,
+*módulos a instalar* y *dominios de dns*.
 
-Adicionalmente, existen tres módulos que por defecto están en "no": Ceilometer, swift y snmp. En la
-versión de OpenStack usada por este instalador (grizzly) ceilometer está aun en prueba de concepto.
-El módulo de swift se puede instalar "si usted realmente va a usarlo". Swift por si solo ya es casi
-tan extenso como todo OpenStack. Úselo si REALMENTE sabe lo que está haciendo y si REALMENTE lo va
-a utilizar. El módulo de SNMP instala variables de monitoreo útiles si usted va a monitorear OpenStack
-vía snmp pero no instala ningún tipo de aplicación de monitoreo. Las variables están descritas (si
-usted instala el soporte) en el archivo /etc/snmp/snmpd.conf.
+En su versión por defecto, el archivo de configuración tiene las selecciones
+de módulos para instalar lo que se conoce como un "all-in-one" (un servidor
+monolítico de *OpenStack* con todos los servicios).
 
-Si usted desea instalar un "all-in-one", sólo modifique las contraseñas, direcciones IP y dominios
-de correo y de dhcp/dnsmasq que aparecen en el archivo de configuración.
+Adicionalmente, existen tres módulos que por defecto están en "no":
+*Ceilometer*, *Swift* y *SNMP*. En la versión de *OpenStack* usada por este
+instalador (*Grizzly*) *Ceilometer* está aun en prueba de concepto.  El módulo de
+swift se puede instalar "si usted realmente va a usarlo". *Swift* por si solo ya
+es casi tan extenso como todo *OpenStack*. Úselo si **REALMENTE** sabe lo que está
+haciendo y si **REALMENTE** lo va a utilizar. El módulo de *SNMP* instala variables
+de monitoreo útiles si usted va a monitorear *OpenStack* vía *SNMP* pero no
+instala ningún tipo de aplicación de monitoreo. Las variables están descritas
+(si usted instala el soporte) en el archivo `/etc/snmp/snmpd.conf`.
 
-Luego de actualizar su archivo de configuración, ejecute en la raíz del directorio del script el
-comando siguiente:
+Si usted desea instalar un "all-in-one", sólo modifique las contraseñas,
+direcciones IP y dominios de correo y de *dhcp/dnsmasq* que aparecen en el
+archivo de configuración.
 
+Luego de actualizar su archivo de configuración, ejecute en la raíz del
+directorio del *script* el comando siguiente:
+
+```bash
 # ./main-installer.sh install
+```
 
 El instalador le preguntará si quiere proceder (y/n).
 
-Si ejecuta el instalador con el parámetro adicional "auto", el mismo seguirá de manera automática sin
-preguntar. Ejemplo:
+Si ejecuta el instalador con el parámetro adicional *auto*, el mismo seguirá
+de manera automática sin preguntar. Ejemplo:
 
+```bash
 # ./main-installer.sh install auto
+```
 
-Usted puede guardar todas las salidas del instalador usando la herramienta "tee". Ejemplo:
+Usted puede guardar todas las salidas del instalador usando la herramienta
+`tee`. Ejemplo:
 
-# ./main-installer.sh install | tee -a /var/log/install-log.log
+Si su nodo de controller va a incluir un servicio de compute (controller +
+compute), la siguiente variable del archivo de configuración debe estar en
+"no":
 
-Todo lo que haga y saque a consola el instalador quedará guardado en el archivo "install-log.log" o como
-haya decidido llamarlo.
-
-
-CASOS TÍPICOS DE INSTALACIÓN
-
-En una instalación mas convencional y de producción de OpenStack, usted tendrá "por lo menos" un nodo
-de control (llamado "controller") y nodos adicionales de computación (llamados "compute").
-
-En tal caso, debe instalar primero el controller. Modifique el archivo de configuración para incluir los
-módulos que normalmente debe llevar un controller. Específicamente: glance, cinder, quantum, nova, y el
-dashboard (horizon). 
-
-Si su nodo de controller va a incluir un servicio de compute (controller + compute), la siguiente
-variable del archivo de configuración debe estar en "no":
-
+```bash
 nova_without_compute="no"
+```
 
-En cambio, si va a instalar un controlador "puro" (sin servicio de compute) coloque la variable en "yes":
+En cambio, si va a instalar un controlador "puro" (sin servicio de compute)
+coloque la variable en "yes":
 
+```bash
 nova_without_compute="yes"
+```
 
-Nodos de compute: Para los nodos de compute, debe dejar en "yes" sólo las variables de instalación de los
-módulos de nova y quantum. El resto de los módulos (glance, cinder, horizon, etc.) deben estar en "no".
-Adicionalmente, las siguiente variables en las secciones de nova y quantum deben estar en "yes":
+**Nodos de compute:** Para los nodos de compute, debe dejar en "yes" sólo las
+variables de instalación de los módulos de nova y quantum. El resto de los
+módulos (glance, cinder, horizon, etc.) deben estar en "no".  Adicionalmente,
+las siguiente variables en las secciones de nova y quantum deben estar en
+"yes":
 
+```
 nova_in_compute_node="yes"
 quantum_in_compute_node="yes"
+```
 
-Debe colocar las IP's de los servicios de quantum, keystone, glance y cinder según la que tiene el 
-controlador (incluyendo las Ip's del backend de Base de Datos). En cambio, las siguientes variables deben
-ser colocadas a la IP del nodo de compute:
+Debe colocar las IP's de los servicios de quantum, keystone, glance y cinder
+según la que tiene el controlador (incluyendo las Ip's del backend de Base de
+Datos). En cambio, las siguientes variables deben ser colocadas a la IP del
+nodo de compute:
 
+```    
 novahost="IP del Nova Compute Host"
 glancehost="IP del Controlador"
 cinderhost="IP del controlador"
@@ -108,9 +124,9 @@ keystonehost="IP del controlador"
 messagebrokerhost="IP del controlador"
 dbbackendhost="IP del controlador o del backend de base de datos"
 vncserver_controller_address | spiceserver_controller_address = "IP del controlador"
+```
 
-
-BACKEND DE BASE DE DATOS
+### Backend de Base de Datos
 
 El instalador tiene la posibilidad de instalar y configurar el backend de base de datos, y de crear
 las bases de datos. Esto es completamente controlable por el archivo de configuración a través de las
