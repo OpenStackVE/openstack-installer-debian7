@@ -142,7 +142,7 @@ Con estas tres opciones en "yes", se instalará el software de base de datos,
 se configurará y se crearán las bases de datos, todo con la información
 contenida en el archivo de configuración.
 
-> ALERTA: Si usted elige estas opciones, se debe asegurar que no exista
+> **ALERTA**: Si usted elige estas opciones, se debe asegurar que no exista
 > previamente software de base de datos instalado o el proceso fallará.
 
 Si usted desea "no instalar el software" pero si tiene acceso administrativo
@@ -195,7 +195,7 @@ El script utiliza las siguientes opciones:
 5. **restart**: reinicia todos los servicios.
 6. **status**: muestra el estado de todos los servicios.
 
-    > IMPORTANTE: El script "openstack-control.sh" tiene la gran ventaja de subir (o
+    > **IMPORTANTE**: El script "openstack-control.sh" tiene la gran ventaja de subir (o
     > bajar) todos los servicios de openstack en el orden correcto. Tanto los
     > paquetes de debian como los de centos colocan el orden no precisamente
     > "óptimo". Recomendación: colocar lo siguiente en el /etc/rc.d/rc.local del
