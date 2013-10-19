@@ -105,7 +105,7 @@ módulos (glance, cinder, horizon, etc.) deben estar en "no".  Adicionalmente,
 las siguiente variables en las secciones de nova y quantum deben estar en
 "yes":
 
-```
+```bash
 nova_in_compute_node="yes"
 quantum_in_compute_node="yes"
 ```
@@ -115,7 +115,7 @@ según la que tiene el controlador (incluyendo las Ip's del backend de Base de
 Datos). En cambio, las siguientes variables deben ser colocadas a la IP del
 nodo de compute:
 
-```    
+```bash
 novahost="IP del Nova Compute Host"
 glancehost="IP del Controlador"
 cinderhost="IP del controlador"
@@ -132,90 +132,113 @@ El instalador tiene la posibilidad de instalar y configurar el backend de base d
 las bases de datos. Esto es completamente controlable por el archivo de configuración a través de las
 siguientes variables:
 
+```bash
 dbcreate="yes"
 dbinstall="yes"
 dbpopulate="yes"
+```
 
-Con estas tres opciones en "yes", se instalará el software de base de datos, se configurará y se crearán
-las bases de datos, todo con la información contenida en el archivo de configuración.
+Con estas tres opciones en "yes", se instalará el software de base de datos,
+se configurará y se crearán las bases de datos, todo con la información
+contenida en el archivo de configuración.
 
-ALERTA: Si usted elige estas opciones, se debe asegurar que no exista previamente software de base de
-datos instalado o el proceso fallará.
+> ALERTA: Si usted elige estas opciones, se debe asegurar que no exista
+> previamente software de base de datos instalado o el proceso fallará.
 
-Si usted desea "no instalar el software" pero si tiene acceso administrativo completo al backend de base
-de datos, coloque las siguiente combinación:
+Si usted desea "no instalar el software" pero si tiene acceso administrativo
+completo al backend de base de datos, coloque las siguiente combinación:
 
+```bash
 dbcreate="yes"
 dbinstall="no"
 dbpopulate="yes"
+```
 
-Con esto, el software de base de datos no será instalado, pero queda de parte de usted (o su DBA) asegurarse
-que tiene acceso administrativo completo para crear y modificar bases de datos en el backend seleccionado.
+Con esto, el software de base de datos no será instalado, pero queda de parte
+de usted (o su *DBA*) asegurarse que tiene acceso administrativo completo para
+crear y modificar bases de datos en el backend seleccionado.
 
-Si no desea ni instalar ni crear bases de datos (asumimos que ya las tiene previamente creadas) coloque los
-tres valores en "no":
+Si no desea ni instalar ni crear bases de datos (asumimos que ya las tiene
+previamente creadas) coloque los tres valores en "no":
 
+```bash
 dbcreate="no"
 dbinstall="no"
 dbpopulate="no"
 
+```
 
-BACKEND DE MENSAJERÍA (Message Broker)
+### Backend de Mensajería (Message Broker)
 
-Como parte de los componentes a instalar y configurar, este instalador instala y configura el software
-para AMQP (el Message Broker). Esto es un paso mandatorio para un controlador o un "all-in-one". Si su
-o sus servidores ya tienen un messaje broker instalado, pueden ocurrir conflictos que prevengan el 
+Como parte de los componentes a instalar y configurar, este instalador instala
+y configura el software para *AMQP* (el *Message Broker*). Esto es un paso
+mandatorio para un controlador o un *all-in-one*. Si su o sus servidores ya
+tienen un messaje broker instalado, pueden ocurrir conflictos que prevengan el
 correcto funcionamiento de la instalación.
 
 
-SCRIPTS DE AYUDA
+### Scripts de Ayuda
 
 Este instalador colocará en /usr/local/bin un script de ayuda para poder levantar, bajar, desactivar,
 activar los servicios de openstack:
 
+```bash
 openstack-control.sh OPCIÓN
+```
 
-El script utiliza las siguientes opciones
+El script utiliza las siguientes opciones:
 
-enable: activa los servicios para autoarranque en el boot del servidor.
-disable: desactiva los servicios para autoarranque en el boot del servidor.
-start: arranca todos los servicios.
-stop: detiene todos los servicios.
-restart: reinicia todos los servicios.
-status: muestra el estado de todos los servicios.
+1. **enable**: activa los servicios para autoarranque en el boot del servidor.
+2. **disable**: desactiva los servicios para autoarranque en el boot del servidor.
+3. **start**: arranca todos los servicios.
+4. **stop**: detiene todos los servicios.
+5. **restart**: reinicia todos los servicios.
+6. **status**: muestra el estado de todos los servicios.
 
-IMPORTANTE: El script "openstack-control.sh" tiene la gran ventaja de subir (o bajar) todos los servicios
-de openstack en el orden correcto. Tanto los paquetes de debian como los de centos colocan el orden no
-precisamente "óptimo". Recomendación: colocar lo siguiente en el /etc/rc.d/rc.local del servidor para forzar
-a que los servicios de OpenStack arranquen en el orden correcto:
+    > IMPORTANTE: El script "openstack-control.sh" tiene la gran ventaja de subir (o
+    > bajar) todos los servicios de openstack en el orden correcto. Tanto los
+    > paquetes de debian como los de centos colocan el orden no precisamente
+    > "óptimo". Recomendación: colocar lo siguiente en el /etc/rc.d/rc.local del
+    > servidor para forzar a que los servicios de OpenStack arranquen en el orden
+    > correcto:
 
+```bash
 /usr/local/bin/openstack-control.sh restart
+```
 
-NOTA: El script detecta que servicios de OpenStack fueron instalados y configurados por el instalador para
-iniciar/detener/reiniciar/habilitar/deshabilitar/verificar los servicios correctos en el orden correcto.
+> NOTA: El script detecta que servicios de OpenStack fueron instalados y
+> configurados por el instalador para
+> iniciar/detener/reiniciar/habilitar/deshabilitar/verificar los servicios
+> correctos en el orden correcto.
 
-Adicional a "openstack-control.sh", el instalador copia a /usr/local/bin el script "openstack-log-cleaner.sh".
-Este script tiene como función limpiar todos los logs de todos los componentes de OpenStack instalados por
-esta herramienta de instalación.
+Adicional a `openstack-control.sh`, el instalador copia a `/usr/local/bin` el
+script `openstack-log-cleaner.sh`.  Este script tiene como función limpiar
+todos los logs de todos los componentes de *OpenStack* instalados por esta
+herramienta de instalación.
 
-El script es llamado durante la fase final de instalación para limpiar los logs antes de dejar el servidor
-instalado, pero puede ser utilizado también para limpiar los logs en caso de ser necesario.
+El script es llamado durante la fase final de instalación para limpiar los
+logs antes de dejar el servidor instalado, pero puede ser utilizado también
+para limpiar los logs en caso de ser necesario.
 
 
-DNSMASQ
+### DNSMASQ
 
-El instalador crea una configuración personalizada del componente "dnsmasq" usado por el agente DHCP de
-Quantum (quantum-dhcp-agent). Dicha configuración incluye un archivo donde usted puede colocar opciones
-especiales:
+El instalador crea una configuración personalizada del componente *dnsmasq*
+usado por el agente *DHCP* de *Quantum* (`quantum-dhcp-agent`). Dicha configuración
+incluye un archivo donde usted puede colocar opciones especiales:
 
+```
 /etc/dnsmasq-quantum.d/quantum-dnsmasq-extra.conf
+```
 
-Hay ejemplos comentados en el archivo. Use esos ejemplos para pasar opciones a las distintas instancias de
-dnsmasq creadas para cada subred donde usted active la opción de usar "dhcp".
+Hay ejemplos comentados en el archivo. Use esos ejemplos para pasar opciones a
+las distintas instancias de dnsmasq creadas para cada subred donde usted
+active la opción de usar *dhcp*.
 
-Recomendación: Trate de tener una buena estructura de "DNS" para sus máquinas virtuales de manera que las
-pueda identificar de manera apropiada y utilice las opciones de dnsmasq para agregar o separar subdominios
-para cada rango de IP's.
+> **Recomendación**: Trate de tener una buena estructura de "DNS" para sus máquinas
+> virtuales de manera que las pueda identificar de manera apropiada y utilice
+> las opciones de dnsmasq para agregar o separar subdominios para cada rango de
+> IP's.
 
 
 MODULARIZACIÓN DEL INSTALADOR
