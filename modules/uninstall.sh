@@ -166,22 +166,11 @@ rm -fr  /etc/qpid \
 	/etc/openstack-control-script-config \
 	/var/lib/keystone-signing-swift \
 	$dnsmasq_config_file \
-	/usr/local/bin/vm-number-by-states.sh \
-	/usr/local/bin/vm-total-cpu-and-ram-usage.sh \
-	/usr/local/bin/vm-total-disk-bytes-usage.sh \
-	/usr/local/bin/node-cpu.sh \
-	/usr/local/bin/node-memory.sh \
-	/etc/init.d/tgtd \
-	/etc/cron.d/openstack-monitor.crontab \
 	/etc/dnsmasq-quantum.d \
-	/var/tmp/node-cpu.txt \
-	/var/tmp/node-memory.txt \
-	/var/tmp/packstack \
-	/var/tmp/vm-cpu-ram.txt \
-	/var/tmp/vm-disk.txt \
-	/var/tmp/vm-number-by-states.txt
+	/etc/init.d/tgtd
 
-service cron restart
+
+
 
 rm -f /root/keystonerc_admin
 rm -f /root/ks_admin_token
@@ -189,17 +178,33 @@ rm -f /root/ks_admin_token
 rm -f /usr/local/bin/openstack-control.sh
 rm -f /usr/local/bin/openstack-log-cleaner.sh
 
-if [ -f /etc/snmp/snmpd.conf.pre-openstack ]
+if [ $snmpinstall == "yes" ]
 then
-	rm -f /etc/snmp/snmpd.conf
-	mv /etc/snmp/snmpd.conf.pre-openstack /etc/snmp/snmpd.conf
-	service snmpd restart
-else
-	service snmpd stop
-	aptitude -y purge snmpd snmp-mibs-downloader snmp virt-top
-	rm -rf /etc/snmp/snmpd.*
-fi
+	if [ -f /etc/snmp/snmpd.conf.pre-openstack ]
+	then
+		rm -f /etc/snmp/snmpd.conf
+		mv /etc/snmp/snmpd.conf.pre-openstack /etc/snmp/snmpd.conf
+		service snmpd restart
+	else
+		service snmpd stop
+		aptitude -y purge snmpd snmp-mibs-downloader snmp virt-top
+		rm -rf /etc/snmp/snmpd.*
+	fi
+	rm -f /etc/cron.d/openstack-monitor.crontab \
+	/var/tmp/node-cpu.txt \
+	/var/tmp/node-memory.txt \
+	/var/tmp/packstack \
+	/var/tmp/vm-cpu-ram.txt \
+	/var/tmp/vm-disk.txt \
+	/var/tmp/vm-number-by-states.txt \
+	/usr/local/bin/vm-number-by-states.sh \
+	/usr/local/bin/vm-total-cpu-and-ram-usage.sh \
+	/usr/local/bin/vm-total-disk-bytes-usage.sh \
+	/usr/local/bin/node-cpu.sh \
+	/usr/local/bin/node-memory.sh
 
+	service cron restart
+fi
 
 echo "Limpiando IPTABLES"
 

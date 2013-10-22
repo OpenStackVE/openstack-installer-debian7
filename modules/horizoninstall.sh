@@ -221,10 +221,10 @@ then
 		;;
 	esac
 
-	echo "yes"|/usr/share/openstack-dashboard/manage.py syncdb
-	echo "yes"|/usr/share/openstack-dashboard/manage.py syncdb
+	/usr/share/openstack-dashboard/manage.py syncdb --noinput
+	/usr/share/openstack-dashboard/manage.py createsuperuser --username=root --email=root@localhost.tld --noinput
 	mkdir -p /var/lib/dash/.blackhole
-	echo "yes"|/usr/share/openstack-dashboard/manage.py syncdb
+	/usr/share/openstack-dashboard/manage.py syncdb --noinput
 else
 	echo "CACHES = {" >> /etc/openstack-dashboard/local_settings.py
 	echo "    'default': {" >> /etc/openstack-dashboard/local_settings.py
