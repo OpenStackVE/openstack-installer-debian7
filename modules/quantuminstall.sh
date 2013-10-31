@@ -184,6 +184,8 @@ then
 	sleep 5
 	cat /etc/dnsmasq.conf > $dnsmasq_config_file
 	mkdir -p /etc/dnsmasq-quantum.d
+	echo "user=quantum" >> $dnsmasq_config_file
+	echo "group=quantum" >> $dnsmasq_config_file
 	echo "conf-dir=/etc/dnsmasq-quantum.d" >> $dnsmasq_config_file
 	echo "# Extra options for Quantum-DNSMASQ" > /etc/dnsmasq-quantum.d/quantum-dnsmasq-extra.conf
 	echo "# Samples:" >> /etc/dnsmasq-quantum.d/quantum-dnsmasq-extra.conf
