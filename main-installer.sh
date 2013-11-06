@@ -6,8 +6,8 @@
 # Primera versión: Julio 18 del 2013
 #
 # Script principal
-# Versión 1.5.8 "BlackCat Reloaded"
-# 31 de Octubre del 2013
+# Versión 1.5.9 "BlackCat Reloaded"
+# 06 de Noviembre del 2013
 #
 
 PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
@@ -38,7 +38,7 @@ case $1 in
 	echo "INSTALADOR DE OPENSTACK GRIZZLY PARA DEBIAN 7"
 	echo "Realizado por Reynaldo R. Martinez P."
 	echo "E-Mail: TigerLinux@Gmail.com"
-	echo "Versión 1.5.8 \"BlackCat Reloaded\" - Octubre 31, 2013"
+	echo "Versión 1.5.9 \"BlackCat Reloaded\" - Noviembre 06, 2013"
 	echo ""
 	echo "Se verificaran los prerequisitos"
 	echo "Si alguno de los prerequisitos falla, se informará y se detendrá el proceso"
